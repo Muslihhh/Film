@@ -1,6 +1,6 @@
 <x-app>
     <div>
-        <div>
+        <div class=" mb-28">
             <form class="flex items-center max-w-md mx-auto">   
                 <label for="simple-search" class="sr-only">Search</label>
                 <div class="relative w-full">
@@ -16,6 +16,81 @@
                     <span class="sr-only">Search</span>
                 </button>
             </form>
+        </div>
+        <div class="flex gap-5 overflow-x-scroll">
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+        <a href="" class=" scroll-mx-5">
+            <div class=" relative w-[200px] h-[260px] bg-white group">
+                <img src="starwars.jpg" alt="" class="w-full h-full object-fill group-hover:">
+                <div class=" absolute bg-amber-300 top-0 left-0 p-2">
+                    5 
+                </div>
+            </div>
+            starwars 2017
+        </a>
+       
         </div>
     </div>
 </x-app>

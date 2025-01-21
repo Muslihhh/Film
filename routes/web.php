@@ -11,3 +11,6 @@ Route::get('/admin', function () {
 Route::get('/film', function () {
     return view('film');
 });
+Route::get('/login', function () {
+    return view('Login.form_login');
+});

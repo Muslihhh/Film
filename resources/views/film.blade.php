@@ -12,7 +12,20 @@
             <div class="flex flex-col xl:ml-10 mt-4 xl:mt-0 space-y-4">
                 <!-- Judul -->
                 <h1 class=" relative sm:absolute -top-24 text-4xl font-bold text-gray-800 dark:text-white">Judul Film</h1>
-                
+                <div class=" flex gap-3">
+                    <a href="http://">
+                    <p class=" text-gray-600 dark:text-gray-300 bg-transparent border border-black dark:border-white hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-1 rounded-xl">Kategori</p>
+                    </a>
+                    <a href="http://">
+                    <p class=" text-gray-600 dark:text-gray-300 bg-transparent border border-black dark:border-white hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-1 rounded-xl">Kategori</p>
+                    </a>
+                    <a href="http://">
+                    <p class=" text-gray-600 dark:text-gray-300 bg-transparent border border-black dark:border-white hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-1 rounded-xl">Kategori</p>
+                    </a>
+                    <a href="http://">
+                    <p class=" text-gray-600 dark:text-gray-300 bg-transparent border border-black dark:border-white hover:bg-gray-300 dark:hover:bg-gray-600 px-5 py-1 rounded-xl">Kategori</p>
+                    </a>
+                </div>
                 <!-- Deskripsi -->
                 <p class="text-gray-600 dark:text-gray-300">
                     Deskripsi singkat tentang film ini. Contoh: Film ini bercerita tentang petualangan epik di luar angkasa, penuh aksi dan drama yang mendalam.
@@ -36,5 +49,7 @@
   </video>
   
         </div>
+        
     </div>
+
 </x-app>
