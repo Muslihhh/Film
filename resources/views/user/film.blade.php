@@ -61,8 +61,8 @@
                     <h1 class=" text-3xl">Komentar</h1>
                     <div class="flex flex-col">
                         <div class=" bg-white dark:bg-slate-800 p-5 rounded-md">
-                            <p>Nama</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci rerum placeat molestias doloribus deserunt. Quisquam, molestiae vero voluptate nihil, molestias dolorem delectus recusandae asperiores, ipsum dignissimos laboriosam? Quis, rem possimus.</p>
+                            <p class=" font-semibold">Nama</p>
+                            <p class=" line-clamp-3 text-ellipsis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci rerum placeat molestias doloribus deserunt. Quisquam, molestiae vero voluptate nihil, molestias dolorem delectus recusandae asperiores, ipsum dignissimos laboriosam? Quis, rem possimus.</p>
                         </div>
                     </div>
                 </div>

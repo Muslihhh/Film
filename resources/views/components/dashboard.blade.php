@@ -31,10 +31,9 @@
     </script>
 </head>
 
-<body class="font-sans antialiased  dark:bg-black dark:text-white/50">
+<body class="font-sans antialiased  dark:bg-black dark:text-white/80">
     @include('components.sidebar')
-    <div class=" w-full bg-slate-200 dark:bg-black"> Hi</div>
-    <div class="p-8 sm:ml-64 h-full">
+    <div class="p-8 pt-20 sm:ml-64 h-screen">
      {{ $slot }}   
     </div>
 </body>

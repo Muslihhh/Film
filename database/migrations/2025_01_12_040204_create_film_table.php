@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('film', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('gambar');
-            $table->string('trailer');
+            $table->string('image');
+            $table->string('trailer')->nullable();
             $table->foreignId('id_genre')->references('id')->on('genre')->onDelete('cascade');
             $table->foreignId('id_negara')->references('id')->on('negara')->onDelete('cascade');
-            $table->foreignId('id_tahun')->references('id')->on('tahun')->onDelete('cascade');
+            $table->integer('tahun_rilis');
             $table->timestamps();
         });
     }
