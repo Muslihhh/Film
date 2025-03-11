@@ -17,16 +17,33 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name', 'email', 'foto_profil', 'tanggal_lahir', 'password', 'role'];
 
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isAuthor()
+    {
+        return $this->role === 'author';
+    }
+
+    public function isSubscriber()
+    {
+        return $this->role === 'subscriber';
+    }
     public function komen(){
         return $this->hasMany(Komentar::class, 'komentar', 'id');
     }
-
+    public function films()
+{
+    return $this->hasMany(Film::class, 'id_user');
+}
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

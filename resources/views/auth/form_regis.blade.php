@@ -24,11 +24,13 @@
     </head>
 <body>
     <div class="bg-cover bg-center h-screen flex" style="background-image: url('/images/bgfilm.jpg');">
-        <form action="" class="m-auto h-[450px] w-[350px] bg-transparent  border border-white rounded-2xl">
+        <form action="{{ url('register') }}" method="POST"
+        class="m-auto h-auto w-[350px] bg-transparent  border border-white rounded-2xl">
+        @csrf
         <div class=" h-full bg-black/10 w-full backdrop-blur-sm rounded-2xl px-5 py-10">
             <div class="mt-3">
                 <label for="email" class="text-white font-bold">Nama:</label>
-                <input type="text" id="nama" name="nama" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg" required>
+                <input type="text" id="name" name="name" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg" required>
             </div>
             <div class="mt-3">
                 <label for="email" class="text-white font-bold">Email:</label>
@@ -38,12 +40,16 @@
                 <label for="password" class="text-white font-bold">Password:</label>
                 <input type="text" id="password" name="password" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg" required>
             </div>
+            <div class="mt-3">
+                <label for="tanggal_lahir" class="text-white font-bold">Tanggal_lahir:</label>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg" required>
+            </div>
 
             <div class="mt-9">
-                <button class=" py-2 w-full rounded-2xl border border-blue-100 text-white text-md bg-blue-600">Masuk</button>
+                <button type="submit" class=" py-2 w-full rounded-2xl border border-blue-100 text-white text-md bg-blue-600">Daftar</button>
             </div>
             <div class="mt-3">
-                <span class=" text-white block text-center">Tidak Memiliki Akun? <a href="http://" class=" text-blue-700 underline">Daftar</a></span>
+                <span class=" text-white block text-center">Sudah Memiliki Akun? <a href="http://" class=" text-blue-700 underline">Masuk</a></span>
             </div>
         </div>
     </form>

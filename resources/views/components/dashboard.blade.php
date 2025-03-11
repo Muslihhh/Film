@@ -12,6 +12,10 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/flowbite@1.7.0/dist/flowbite.min.js"></script>
+
+
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -31,7 +35,8 @@
     </script>
 </head>
 
-<body class="font-sans antialiased  dark:bg-black dark:text-white/80">
+
+<body class="font-sans antialiased bg-slate-100  dark:bg-black dark:text-white/80">
     @include('components.sidebar')
     <div class="p-8 pt-20 sm:ml-64 h-screen">
      {{ $slot }}   

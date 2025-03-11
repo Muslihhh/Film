@@ -11,7 +11,7 @@ class tahuncontroller extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

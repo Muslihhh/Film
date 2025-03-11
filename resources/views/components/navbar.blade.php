@@ -1,12 +1,13 @@
 <nav class="bg-white shadow-md dark:bg-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class=" flex items-center overflow-hidden h-[40px] ">
-            <img src="logo.png" class="h-[70px]" alt="Flowbite Logo" />
+            <img src="{{ asset('logo.png') }}" class="h-[70px]" alt="Flowbite Logo" />
            
         </a>
         <div>
           
-          <form class="flex items-center max-w-sm mx-auto">
+          <form class="flex items-center max-w-sm mx-auto ">
+            @csrf
             <label for="simple-search" class="sr-only">Search</label>
             <div class="relative w-full">
               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -43,68 +44,53 @@
                 class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                
                 <li class=" content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                    <a href="#">Home</a>
+                    <a href="{{ route('dashboard.subscriber') }}">Home</a>
                 </li>
                 <li  class=" content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                    <a href="#">Genre</a>
+                    <a href="{{ route('genres.list') }}">Genre</a>
                 </li>
                 
 
 
-                <li Genre" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover"
-                    class=" cursor-pointer content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                    >Negara
-                </li>
+                <li id="dropdownNegaraButton" data-dropdown-toggle="dropdownNegara" data-dropdown-trigger="hover"
+    class="cursor-pointer content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+    Negara
+</li>
 
-                <!-- Dropdown menu -->
-                <div id="dropdownHover" class=" grid grid-cols-3 z-10 hidden bg-white shadow w-auto dark:bg-gray-700">
+<!-- Dropdown menu -->
+<div id="dropdownNegara" class="grid grid-cols-2 z-10 hidden bg-white shadow w-auto dark:bg-gray-700">
+    @foreach ($negaraList as $negaraOption)
+        <div>
+            <a href="{{ route('dashboard.subscriber', ['negara' => $negaraOption->id] + request()->except('page')) }}"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
+                {{ request('negara') == $negaraOption->id ? 'bg-blue-500 text-white' : '' }}">
+                {{ $negaraOption->nama_negara }}
+            </a>
+        </div>
+    @endforeach
+</div>
 
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Indonesia</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Amerika Serikat</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Jepang</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Korea Selatan</a>
-                    </div>
 
-                </div>
-                <li id="dropdowntahunButton" data-dropdown-toggle="dropdowntahun" data-dropdown-trigger="hover"
-                    class=" cursor-pointer content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                    >Tahun
-                </li>
+<li id="dropdowntahunButton" data-dropdown-toggle="dropdowntahun" data-dropdown-trigger="hover"
+class="cursor-pointer content-center block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
+Tahun
+</li>
 
-                <!-- Dropdown menu -->
-                <div id="dropdowntahun" class=" grid grid-cols-2 z-10 hidden bg-white shadow w-auto dark:bg-gray-700">
+<!-- Dropdown menu -->
+<div id="dropdowntahun" class="grid grid-cols-2 z-10 hidden bg-white shadow w-auto dark:bg-gray-700">
+@foreach ($tahunList as $tahunOption)
+    <div>
+        <a href="{{ route('dashboard.subscriber', ['tahun' => $tahunOption] + request()->except('page')) }}"
+            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
+            {{ request('tahun') == $tahunOption ? 'bg-blue-500 text-white' : '' }}">
+            {{ $tahunOption }}
+        </a>
+    </div>
+@endforeach
+</div>
 
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2019</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2020</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2021</a>
-                    </div>
-                    <div>
-                        <a href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2022</a>
-                    </div>
 
-                </div>
-
-                </li>
+                
                 <li>
                     <button id="theme-toggle" type="button"
                         class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
@@ -162,6 +148,48 @@
 
                         });
                     </script>
+                </li>
+                <li>
+                    @if(Auth::check())
+                    <div class="flex items-center ms-3">
+                        <div>
+                          <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                          </button>
+                        </div>
+                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                          <div class="px-4 py-3" role="none">
+                            <p class="text-sm text-gray-900 dark:text-white" role="none">
+                              Neil Sims
+                            </p>
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                              neil.sims@flowbite.com
+                            </p>
+                          </div>
+                          <ul class="py-1" role="none">
+                            <li>
+                              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
+                            </li>
+                            <li>
+                              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
+                            </li>
+                            <li>
+                              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">Logout</button>
+                                </form>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+    @else
+        <a href="{{ route('login') }}" class="px-2 py-2 bg-blue-600 text-white rounded">Login</a>
+        <a href="{{ route('register') }}" class=" px-2 py-2 bg-transparant border border-blue-600 text-white rounded">Register</a>
+    @endif
                 </li>
             </ul>
         </div>

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class genrecontroller extends Controller
 {
@@ -12,8 +15,10 @@ class genrecontroller extends Controller
      */
     public function index()
     {
-        $genres = Genre::all();
-        return view('admin.genre.datagenre', compact('genres'));
+        $genres = Genre::withCount('films')->get();
+        $films = Film::all();
+        $genreCount = Genre::count();
+        return view('admin.genre.datagenre', compact('genres', 'genreCount', 'films'));
     }
 
     /**
@@ -21,7 +26,8 @@ class genrecontroller extends Controller
      */
     public function create()
     {
-        //
+        $genres = Genre::all();
+        return view('admin.genre.addgenre', compact('genres'));
     }
 
     /**
@@ -29,7 +35,15 @@ class genrecontroller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_genre' => 'required',
+        ]);
+        
+        $genre = new Genre();
+        $genre->nama_genre = $request->nama_genre;
+        $genre->save();
+
+        return redirect()->route('genres.index')->with('success', 'Genre berhasil ditambahkan');
     }
 
     /**
@@ -37,7 +51,6 @@ class genrecontroller extends Controller
      */
     public function show(string $id)
     {
-        //
     }
 
     /**
@@ -51,9 +64,19 @@ class genrecontroller extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Genre $genre)
     {
-        //
+      
+            $request->validate([
+                'nama_genre' => 'required|string|max:255|unique:genre,nama_genre,' . $genre->id,
+            ]);
+
+            $genre->nama_genre = $request->input('nama_genre');
+            $genre->save();
+        
+            return redirect()->route('genres.index')->with('success', 'Genre berhasil diperbarui.');
+        
+        
     }
 
     /**
@@ -61,6 +84,35 @@ class genrecontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $genre = Genre::find($id);
+        $genre->delete();
+        return redirect()->route('genres.index')->with('success', 'Genre berhasil dihapus');
     }
+
+    public function list(Request $request)
+{
+    $query = Film::with('genres');
+
+    if ($request->has('genres') && is_array($request->genres) && count($request->genres) > 0) {
+        $query->whereHas('genres', function ($q) use ($request) {
+            $q->whereIn('genre_id', $request->genres);
+        });
+    }
+
+    if (Auth::check()) {
+        // Jika user login, filter film sesuai umur mereka
+        $user = Auth::user();
+        $usia = Carbon::parse($user->tanggal_lahir)->age;
+        $query->where('age_category', '<=', $usia);
+    } else {
+        // Jika anonymous, hanya tampilkan film "Semua Umur (SU)"
+        $query->where('age_category', 0);
+    }
+
+    $films = $query->get();
+    $genres = Genre::all();
+
+    return view('user.genre', compact('genres', 'films'));
+}
+
 }

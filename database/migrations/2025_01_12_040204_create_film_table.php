@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('judul');
             $table->string('image');
+            $table->text('sinopsis');
             $table->string('trailer')->nullable();
-            $table->foreignId('id_genre')->references('id')->on('genre')->onDelete('cascade');
             $table->foreignId('id_negara')->references('id')->on('negara')->onDelete('cascade');
             $table->integer('tahun_rilis');
+            $table->string('age_category');
+            $table->integer('durasi');
             $table->timestamps();
         });
     }
