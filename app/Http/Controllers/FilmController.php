@@ -33,10 +33,9 @@ class filmcontroller extends Controller
         $query->where('judul', 'LIKE', "%{$search}%");
     }
 
-    // Filter berdasarkan tahun (bisa lebih dari satu)
+    // Filter berdasarkan tahun 
     if ($tahun = $request->input('tahun')) {
-        $tahunArray = explode(',', $tahun);
-        $query->whereIn('tahun_rilis', $tahunArray);
+        $query->whereIn('tahun_rilis', $tahun );
     }
 
     // Filter berdasarkan negara
@@ -44,7 +43,7 @@ class filmcontroller extends Controller
         $query->where('id_negara', $negara);
     }
 
-    // Filter berdasarkan genre (bisa lebih dari satu)
+    // Filter berdasarkan genre 
     if ($request->has('genres') && is_array($request->genres) && count($request->genres) > 0) {
         $query->whereHas('genres', function ($q) use ($request) {
             $q->whereIn('genre_id', $request->genres);
@@ -100,57 +99,60 @@ class filmcontroller extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $request->validate([
-        'judul' => 'required',
-        'image' => 'required|image|mimes:jpg,jpeg,png',
-        'sinopsis' => 'required',
-        'trailer' => 'nullable|url',
-        'genres' => 'required|array',
-        'genres.*' => 'exists:genre,id',
-        'id_negara' => 'required|exists:negara,id',
-        'tahun_rilis' => 'required|integer',
-        'age_category' => 'required',
-        'durasi' => 'required|integer',
-    ]);
-
-    // Buat objek Film
-    $film = new Film();
-    $film->judul = $request->input('judul');
-    $film->sinopsis = $request->input('sinopsis');
-    $film->tahun_rilis = $request->input('tahun_rilis');
-    $film->durasi = $request->input('durasi');
-    $film->trailer = $request->input('trailer');
-    $film->age_category = $request->input('age_category');
-    $film->id_negara = $request->input('id_negara');
-
-    // Simpan gambar jika ada
-    if ($request->hasFile('image')) {
-        $path = $request->file('image')->store('film_images', 'public');
-        $film->image = $path;
+    {
+        $request->validate([
+            'judul' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png',
+            'sinopsis' => 'required',
+            'trailer' => 'nullable|url',
+            'genres' => 'required|array',
+            'genres.*' => 'exists:genre,id',
+            'cast'=> 'required',
+            'id_negara' => 'required|exists:negara,id',
+            'tahun_rilis' => 'required|integer',
+            'age_category' => 'required',
+            'durasi' => 'required|integer',
+        ]);
+    
+        // Buat objek Film
+        $film = new Film();
+        $film->judul = $request->input('judul');
+        $film->sinopsis = $request->input('sinopsis');
+        $film->tahun_rilis = $request->input('tahun_rilis');
+        $film->durasi = $request->input('durasi');
+        $film->trailer = $request->input('trailer');
+        $film->age_category = $request->input('age_category');
+        $film->id_negara = $request->input('id_negara');
+        $film->cast = $request->input('cast');
+    
+        // Simpan gambar jika ada
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('film_images', 'public');
+            $film->image = $path;
+        }
+        $film->id_user = Auth::id();
+        // **Simpan Film ke Database Sebelum Attach Genre**
+        $film->save();
+    
+        // **Tambahkan Genre ke Tabel Pivot (Setelah Film Tersimpan)**
+        $film->genres()->attach(array_values($request->genres));
+        ActivityLog::create([
+            'id_user' => Auth::id(),
+            'action' => 'Tambah Film',
+            'deskripsi' => 'Menambahkan film baru: ' . $film->judul
+        ]);
+    
+        return redirect()->route('films.index')->with('success', 'Film berhasil ditambahkan.');
     }
-  
-    // **Simpan Film ke Database Sebelum Attach Genre**
-    $film->save();
-
-    // **Tambahkan Genre ke Tabel Pivot (Setelah Film Tersimpan)**
-    $film->genres()->attach(array_values($request->genres));
-    ActivityLog::create([
-        'id_user' => Auth::id(),
-        'action' => 'Tambah Film',
-        'deskripsi' => 'Menambahkan film baru: ' . $film->judul
-    ]);
-
-    return redirect()->route('films.index')->with('success', 'Film berhasil ditambahkan.');
-}
 
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Film $film)
+    public function show(Film $film, $slug)
 {
+    $film = Film::where('slug', $slug)->firstOrFail();
     $film->load(['genres', 'komentar.user', 'komentar.replies.user']); // Memuat komentar, balasan, dan user
     
     if (Auth::check()) {
@@ -170,7 +172,8 @@ class filmcontroller extends Controller
             ->limit(5)
             ->get();
     }
-    return view('user.film', compact('film', 'randomFilms'));
+    $reviewCount = $film->komentar()->whereNull('parent_id')->count();
+    return view('user.film.film', compact('film', 'randomFilms', 'reviewCount'));
 }
 
 
@@ -206,7 +209,7 @@ class filmcontroller extends Controller
     $film->tahun_rilis = $request->input('tahun_rilis');
     $film->age_category = $request->input('age_category');
     $film->durasi = $request->input('durasi');
-
+ 
     $film->save();
 
     // Update genre film
@@ -240,9 +243,13 @@ class filmcontroller extends Controller
 
     public function latestFilms()
     {
-        $satubulan = Carbon::now()->subMonth();
-        $query = Film::with('genres', 'negara')->where('tahun_rilis', '>=', $satubulan->month)->orderBy('tahun_rilis', 'desc');
-
+        $satuBulanLalu = Carbon::now()->subMonth();
+    
+        // 🔹 Cek apakah menggunakan `tahun_rilis` atau `created_at`
+        $query = Film::with('genres', 'negara')
+            ->where('created_at', '>=', $satuBulanLalu) // Gunakan created_at untuk filter 1 bulan terakhir
+            ->orderByDesc('created_at');
+    
         // 🔹 **Filter Umur**
         if (Auth::check()) {
             $usia = Carbon::parse(Auth::user()->tanggal_lahir)->age;
@@ -250,10 +257,10 @@ class filmcontroller extends Controller
         } else {
             $query->where('age_category', 0);
         }
-
+    
         $films = $query->paginate(10);
-
-        return view('user.film_list', [
+    
+        return view('user.film.film_list', [
             'title' => 'Film Terbaru',
             'films' => $films
         ]);
@@ -283,7 +290,7 @@ class filmcontroller extends Controller
 
         $films = $query->paginate(10);
 
-        return view('user.film_list', [
+        return view('user.film.film_list', [
             'title' => 'Film Rating Tertinggi',
             'films' => $films
         ]);

@@ -24,8 +24,20 @@
     </head>
 <body>
     <div class="bg-cover bg-center h-screen flex" style="background-image: url('/images/bgfilm.jpg');">
+        <div class="m-auto h-auto w-[350px] bg-transparent   rounded-2xl">
+        @if(session('success'))
+        <div class=" dark:bg-green-600 bg-green-400/50 w-full p-2 text-sm">
+        {{ session('success') }}
+        </div>
+@endif
+@if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3  relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">{{ $errors->first('email') }}</span>
+                </div>
+            @endif
         <form action="{{ route('login') }}" method="POST"
-        class="m-auto h-auto w-[350px] bg-transparent  border border-white rounded-2xl">
+        class="border border-white rounded-2xl">
         @csrf
         <div class=" h-full bg-black/10 w-full backdrop-blur-sm rounded-2xl px-5 py-10">
             
@@ -43,9 +55,11 @@
             </div>
             <div class="mt-3">
                 <span class=" text-white block text-center">Tidak Memiliki Akun? <a href="{{ route('register') }}" class=" text-blue-700 underline">Daftar</a></span>
+                <span class=" text-white block text-center">Lupa Password? <a href="{{ route('password.request') }}" class="text-blue-500 text-sm hover:underline">Ganti Password</a></span>
             </div>
         </div>
     </form>
+</div>
     </div>
 </body>
 </html>

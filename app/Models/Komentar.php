@@ -21,4 +21,11 @@ class Komentar extends Model
     {
         return $this->hasMany(Komentar::class, 'parent_id');
     }
+    public static function userHasCommented($id_film, $id_user)
+    {
+        return self::where('id_film', $id_film)
+            ->where('id_user', $id_user)
+            ->whereNull('parent_id')
+            ->exists();
+    }
 }

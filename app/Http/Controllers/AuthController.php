@@ -67,7 +67,7 @@ class AuthController extends Controller
 
     $user->save();
 
-    return redirect()->route('login')->with('success', 'Registration successful as Subscriber');
+    return redirect()->route('login')->with('success', 'Berhasil mendaftar. Silakan login.');
 }
 
 
@@ -75,6 +75,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('dashboard.subscriber');
+        return redirect('/');
     }
 }

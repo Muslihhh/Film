@@ -1,4 +1,5 @@
 function openEditFilmModal(id, judul, sinopsis, trailer, id_negara, tahun_rilis, age_category, durasi, genres) {
+    // Isi form dengan data film
     document.getElementById('edit-film-id').value = id;
     document.getElementById('edit-judul').value = judul;
     document.getElementById('edit-sinopsis').value = sinopsis;
@@ -13,19 +14,23 @@ function openEditFilmModal(id, judul, sinopsis, trailer, id_negara, tahun_rilis,
         checkbox.checked = false;
     });
 
+    // Ubah string JSON genres menjadi array JavaScript
+    const genreIds = JSON.parse(genres);
+
     // Centang checkbox genre yang sudah dimiliki film
-    genres.forEach(genreId => {
-        let checkbox = document.getElementById('genre-' + genreId);
+    genreIds.forEach(genreId => {
+        let checkbox = document.getElementById('edit-genre-' + genreId);
         if (checkbox) checkbox.checked = true;
     });
 
-    // Set action form ke URL update film
-    document.getElementById('edit-film-form').action = '/films/' + id;
+    // Perbaiki action form sesuai route
+    document.getElementById('edit-film-form').action = `/admin/films/${id}`;
 
     // Tampilkan modal edit
     document.getElementById('edit-film-modal').classList.remove('hidden');
 }
 
 function closeEditFilmModal() {
+    // Sembunyikan modal
     document.getElementById('edit-film-modal').classList.add('hidden');
 }

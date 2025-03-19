@@ -1,48 +1,102 @@
-<form action="{{ route('films.index') }}" method="GET">
-    <div id="dropdownSearch" class="z-10 hidden bg-white rounded-lg ml-20 shadow-sm w-60 dark:bg-gray-700">
-        <div class="p-3">
-            <label for="input-group-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                </div>
-                <input type="text" id="searchGenreInput" onkeyup="filterGenres()" 
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                placeholder="Cari Genre...">
-            </div>
+<!-- Modal Sidebar -->
+<div id="filter-modal" class="fixed top-0 right-0 w-80 h-full bg-white dark:bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+    <div class="p-5 h-full flex flex-col">
+        <div class="flex justify-between items-center border-b pb-3">
+            <h2 class="text-lg font-semibold">Filter</h2>
+            <button onclick="closeFilterModal()" class="text-gray-500 hover:text-red-500">✖</button>
         </div>
 
-        <ul class="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
-            @foreach ($genres as $genre)
-            <li class="genre-item">
-                <div class="flex items-center p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input type="checkbox" name="genres[]" value="{{ $genre->id }}" 
-                            {{ in_array($genre->id, request('genres', [])) ? 'checked' : '' }}>
-                        <span>{{ $genre->nama_genre }} </span>
-                    
+        <!-- Form dengan Scroll -->
+        <div class="flex-1 overflow-y-auto p-2 no-scrollbar">
+            <form action="{{ route('films.index') }}" method="GET" class="mt-4 space-y-4">
+                <!-- Search Genre -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Genre</label>
+                    <input type="text" id="searchGenreInput" onkeyup="filterGenres()" 
+                        class="w-full bg-white text-black dark:bg-gray-600 dark:text-white p-2 border rounded mb-2" placeholder="Cari Genre...">
+                    <ul class="h-32 overflow-y-auto no-scrollbar  p-2 ">
+                        @foreach ($genres as $genre)
+                        <li class="genre-item">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="genres[]" value="{{ $genre->id }}" 
+                                    {{ in_array($genre->id, request('genres', [])) ? 'checked' : '' }} class="mr-2">
+                                <span>{{ $genre->nama_genre }}</span>
+                            </label>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
-            </li>
-            @endforeach
-        </ul>
 
-        <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Cari</button>
+                <!-- Search Tahun -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Tahun</label>
+                    <input type="text" id="searchTahunInput" onkeyup="filterTahun()" 
+                        class="w-full bg-white text-black dark:bg-gray-600 dark:text-white p-2 border rounded mb-2" placeholder="Cari Tahun...">
+                    <ul class="h-32 overflow-y-auto no-scrollbar  p-2 ">
+                        @foreach ($tahunList as $tahun)
+                        <li class="tahun-item">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="tahun[]" value="{{ $tahun }}" 
+                                    {{ in_array($tahun, request('tahun', [])) ? 'checked' : '' }} class="mr-2">
+                                <span>{{ $tahun }}</span>
+                            </label>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Search Negara -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Negara</label>
+                    <input type="text" id="searchNegaraInput" onkeyup="filterNegara()" 
+                        class="w-full bg-white text-black dark:bg-gray-600 dark:text-white p-2 border rounded mb-2" placeholder="Cari Negara...">
+                    <ul class="h-32 overflow-y-auto no-scrollbar  p-2 ">
+                        @foreach ($negaraList as $negara)
+                        <li class="negara-item">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="negara[]" value="{{ $negara->id }}" 
+                                    {{ in_array($negara->id, request('negara', [])) ? 'checked' : '' }} class="mr-2">
+                                <span>{{ $negara->nama_negara }}</span>
+                            </label>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg">Terapkan</button>
+            </form>
+        </div>
     </div>
-</form>
+</div>
+
+<!-- JavaScript -->
 <script>
+    function openFilterModal() {
+        document.getElementById("filter-modal").classList.remove("translate-x-full");
+    }
+
+    function closeFilterModal() {
+        document.getElementById("filter-modal").classList.add("translate-x-full");
+    }
+
     function filterGenres() {
         let input = document.getElementById("searchGenreInput").value.toLowerCase();
-        let genreItems = document.querySelectorAll(".genre-item");
-    
-        genreItems.forEach(function (item) {
-            let text = item.textContent.toLowerCase();
-            if (text.includes(input)) {
-                item.style.display = ""; // Tampilkan genre yang cocok
-            } else {
-                item.style.display = "none"; // Sembunyikan yang tidak cocok
-            }
+        document.querySelectorAll(".genre-item").forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(input) ? "" : "none";
         });
     }
-    </script>
-    
+
+    function filterTahun() {
+        let input = document.getElementById("searchTahunInput").value.toLowerCase();
+        document.querySelectorAll(".tahun-item").forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(input) ? "" : "none";
+        });
+    }
+
+    function filterNegara() {
+        let input = document.getElementById("searchNegaraInput").value.toLowerCase();
+        document.querySelectorAll(".negara-item").forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(input) ? "" : "none";
+        });
+    }
+</script>

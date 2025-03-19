@@ -36,9 +36,9 @@
 </head>
 
 
-<body class="font-sans antialiased bg-slate-100  dark:bg-black dark:text-white/80">
+<body class="font-sans antialiased bg-slate-100 dark:bg-black dark:text-white/80">
     @include('components.sidebar')
-    <div class="p-8 pt-20 sm:ml-64 h-screen">
+    <div class="p-8 pt-20 sm:ml-64 h-full">
      {{ $slot }}   
     </div>
 </body>

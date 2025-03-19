@@ -40,6 +40,10 @@ class User extends Authenticatable
 {
     return $this->hasMany(Film::class, 'id_user');
 }
+public function watchlist()
+{
+    return $this->hasMany(Watchlist::class);
+}
     public function activityLogs()
     {
         return $this->hasMany(ActivityLog::class);

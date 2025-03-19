@@ -32,11 +32,14 @@
             }
         </script>
     </head>
-    <body class="font-sans antialiased dark:bg-black bg-gray-100 dark:text-white/50">
+    <body class="font-sans antialiased dark:bg-black bg-gray-100 dark:text-white/50 h-full">
         @include('components.navbar')
-        <div class=" m-10 h-screen">
+
+        <div class=" h-full">
            {{ $slot }}
         </div>
+        
+        @include('components.footer')
     </body>
 </html>
 

@@ -15,8 +15,8 @@ class genrecontroller extends Controller
      */
     public function index()
     {
-        $genres = Genre::withCount('films')->get();
         $films = Film::all();
+        $genres = Genre::withCount('films')->get();
         $genreCount = Genre::count();
         return view('admin.genre.datagenre', compact('genres', 'genreCount', 'films'));
     }

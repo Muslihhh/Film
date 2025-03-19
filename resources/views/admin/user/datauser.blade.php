@@ -95,7 +95,7 @@
     document.getElementById('edit-user-role').value = role;
 
     // Set action form agar mengarah ke route update
-    document.getElementById('edit-user-form').action = '/users/' + id;
+    document.getElementById('edit-user-form').action = '/admin/users/' + id;
 
     // Tampilkan modal edit
     document.getElementById('edit-user-modal').classList.remove('hidden');

@@ -45,11 +45,16 @@
                 <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg" required>
             </div>
 
+            {{-- <div class="mt-3">
+                <label for="foto_profil" class="text-white font-bold">Foto Profil:</label>
+                <input type="file" id="foto_profil" name="foto_profil" class="mt-1 w-full text-white bg-black/20 p-2 border border-white rounded-lg">
+
+            </div> --}}
             <div class="mt-9">
                 <button type="submit" class=" py-2 w-full rounded-2xl border border-blue-100 text-white text-md bg-blue-600">Daftar</button>
             </div>
             <div class="mt-3">
-                <span class=" text-white block text-center">Sudah Memiliki Akun? <a href="http://" class=" text-blue-700 underline">Masuk</a></span>
+                <span class=" text-white block text-center">Sudah Memiliki Akun? <a href="{{ route('login') }}" class=" text-blue-700 underline">Masuk</a></span>
             </div>
         </div>
     </form>

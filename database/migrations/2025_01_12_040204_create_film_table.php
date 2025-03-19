@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('film', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->string('judul');
+            $table->string('slug')->unique();
             $table->string('image');
             $table->text('sinopsis');
             $table->string('trailer')->nullable();
