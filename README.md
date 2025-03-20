@@ -26,8 +26,8 @@ Sebelum menginstal, pastikan perangkat Anda memiliki:
 
 ### 1️⃣ Clone Repository
 ```sh
-git clone https://github.com/username/review-film.git
-cd review-film
+git clone https://github.com/Muslihhh/Film.git
+cd Film
 ```
 
 ### 2️⃣ Install Dependencies
@@ -47,7 +47,7 @@ Edit `.env` untuk menyesuaikan koneksi database:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=nama_database
+DB_DATABASE=film
 DB_USERNAME=root
 DB_PASSWORD=
 ```
