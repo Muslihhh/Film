@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Film;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Tahun;
 use App\Models\Negara;
 use App\Models\Komentar;
 use App\Models\ActivityLog;
-use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AuthorController extends Controller
 {
@@ -91,16 +92,19 @@ class AuthorController extends Controller
         $request->validate([
             'judul' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png',
             'sinopsis' => 'required',
             'trailer' => 'nullable|url',
             'genres' => 'required|array',
             'genres.*' => 'exists:genre,id',
+            'cast'=> 'required',
             'id_negara' => 'required|exists:negara,id',
             'tahun_rilis' => 'required|integer',
             'age_category' => 'required',
             'durasi' => 'required|integer',
         ]);
     
+        // Buat objek Film
         $film = new Film();
         $film->judul = $request->input('judul');
         $film->sinopsis = $request->input('sinopsis');
@@ -109,15 +113,22 @@ class AuthorController extends Controller
         $film->trailer = $request->input('trailer');
         $film->age_category = $request->input('age_category');
         $film->id_negara = $request->input('id_negara');
+        $film->cast = $request->input('cast');
     
+        // Simpan gambar jika ada
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('film_images', 'public');
             $film->image = $path;
         }
+        if ($request->hasFile('banner')) {
+            $path = $request->file('banner')->store('film_banners', 'public');
+            $film->banner = $path;
+        }
         $film->id_user = Auth::id();
-
+        // **Simpan Film ke Database Sebelum Attach Genre**
         $film->save();
-
+    
+        // **Tambahkan Genre ke Tabel Pivot (Setelah Film Tersimpan)**
         $film->genres()->attach(array_values($request->genres));
         ActivityLog::create([
             'id_user' => Auth::id(),
@@ -148,39 +159,54 @@ class AuthorController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, Film $film)
-{
-    $request->validate([
-        'judul' => 'required',
-        'sinopsis' => 'required',
-        'trailer' => 'nullable|url',
-        'id_negara' => 'required|exists:negara,id',
-        'tahun_rilis' => 'required|integer',
-        'age_category' => 'required',
-        'durasi' => 'required|integer',
-        'genres' => 'required|array',
-        'genres.*' => 'exists:genre,id',
-    ]);
-
-    $film->judul = $request->input('judul');
-    $film->sinopsis = $request->input('sinopsis');
-    $film->trailer = $request->input('trailer');
-    $film->id_negara = $request->input('id_negara');
-    $film->tahun_rilis = $request->input('tahun_rilis');
-    $film->age_category = $request->input('age_category');
-    $film->durasi = $request->input('durasi');
-   
-    $film->save();
-
-    // Update genre film
-    $film->genres()->sync($request->genres ?? []);
-    ActivityLog::create([
-        'id_user' => Auth::id(),
-        'action' => 'Edit Film',
-        'deskripsi' => 'Mengedit film : ' . $film->judul
-    ]);
-    return redirect()->route('film.index')->with('success', 'Film berhasil diperbarui.');
-}
+     public function update(Request $request, Film $film)
+     {
+         $request->validate([
+             'judul' => 'required',
+             'image' => 'nullable|image|mimes:jpg,jpeg,png',
+             'cast' => 'required',
+             'sinopsis' => 'required',
+             'trailer' => 'nullable|url',
+             'id_negara' => 'required|exists:negara,id',
+             'tahun_rilis' => 'required|integer',
+             'age_category' => 'required',
+             'durasi' => 'required|integer',
+             'genres' => 'required|array',
+             'genres.*' => 'exists:genre,id',
+         ]);
+ 
+         // Update data film
+         $film->update([
+             'judul' => $request->judul,
+             'sinopsis' => $request->sinopsis,
+             'trailer' => $request->trailer,
+             'id_negara' => $request->id_negara,
+             'tahun_rilis' => $request->tahun_rilis,
+             'age_category' => $request->age_category,
+             'durasi' => $request->durasi,
+             'cast' => $request->cast,
+         ]);
+ 
+         // Upload gambar utama
+         if ($request->hasFile('image')) {
+             // Hapus gambar lama jika ada
+             if ($film->image) {
+                 Storage::disk('public')->delete($film->image);
+             }
+             $path = $request->file('image')->store('film_images', 'public');
+             $film->image = $path;
+         }
+ 
+         
+ 
+         // Simpan perubahan
+         $film->save();
+ 
+         // Sync genre
+         $film->genres()->sync($request->genres ?? []);
+ 
+         return redirect()->route('film.index')->with('success', 'Film berhasil diperbarui.');
+     }
 
     /**
      * Remove the specified resource from storage.

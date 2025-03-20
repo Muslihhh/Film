@@ -11,7 +11,7 @@ class KomentarController extends Controller
 {
     public function index(Film $film)
 {
-    $komentars = $film->komentar()->with('user', 'replies.user')->paginate(10);
+    $komentars = Komentar::with(['user', 'film'])->latest()->paginate(10);
     return view('admin.komentar.datakomen', compact('film', 'komentars'));
 }
 
@@ -44,10 +44,12 @@ class KomentarController extends Controller
     return view('user.film.komentar', compact('film', 'komentar'));
     }
 
-    public function destroy(Komentar $komentar)
-    {
-        $komentar->delete();
-        return redirect()->back()->with('success', 'Komentar berhasil dihapus!');
-    }
+    public function destroy($id)
+{
+    $komentar = Komentar::findOrFail($id);
+    $komentar->delete();
+
+    return redirect()->back()->with('success', 'Komentar berhasil dihapus.');
+}
 
 }

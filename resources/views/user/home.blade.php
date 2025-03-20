@@ -1,10 +1,13 @@
 <x-app>
 <div class="m-10">
     <div>
+        <div class="mt-10 mb-20">
+            @include('components.banner', ['banners' => $banners])
+    
+        </div>
         <div class=" mb-28 items-center max-w-md mx-auto">
             @include('user.filter.search')
         </div>
-
         @if (!request('search'))
             <div class="flex justify-between items-center mb-6 py-1 px-3 border-l-4 border-blue-300">
                 <h1 class="text-xl font-bold ">Film Terbaru</h1>
@@ -17,7 +20,8 @@
                     </svg>
                 </a>
             </div>
-            <div
+            
+                <div
                 class="flex w-full overflow-x-auto mb-10 border-b pb-4 scroll-smooth snap-x snap-mandatory no-scrollbar">
                 @foreach ($latestFilms as $film)
                 <div class="film-card" style="flex: 0 0 calc(100% / 6);">

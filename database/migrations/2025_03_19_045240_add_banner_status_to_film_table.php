@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('film', function (Blueprint $table) {
-            $table->string('cast')->after('tahun_rilis');
+            $table->boolean('banner_status')->default(1)->after('durasi');
         });
     }
 

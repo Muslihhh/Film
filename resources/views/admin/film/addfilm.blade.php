@@ -44,17 +44,27 @@
 
                     
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih Genre</label>
-                    <div class=" grid grid-cols-2">
-                        @foreach ($genres as $genre)
-                            <div class="flex items-center">
-                                <input type="checkbox" name="genres[]" value="{{ $genre->id }}" id="genre-{{ $genre->id }}"
-                                    class="mr-2 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <label for="genre-{{ $genre->id }}" class="text-sm text-gray-700 dark:text-white">
-                                    {{ $genre->nama_genre }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
+                    
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Genre</label>
+                            <input type="text" id="addsearchGenreInput" onkeyup="addfilterGenres()" 
+                                class="w-full bg-white text-black dark:bg-gray-600 dark:text-white p-2 border rounded mb-2" placeholder="Cari Genre...">
+                            <ul class="h-32 overflow-y-auto no-scrollbar  p-2 ">
+                                @foreach ($genres as $genre)
+                                <li class="genre-item">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="genres[]" value="{{ $genre->id }}"  id="genre-{{ $genre->id }}"
+                                           >
+                                            <label for="genre-{{ $genre->id }}" class="text-sm text-gray-700 dark:text-white">
+                                                {{ $genre->nama_genre }}
+                                            </label>
+                                    </label>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        
+                    
                 </div>
                 <div>
                     <label for="cast" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cast</label>
@@ -100,6 +110,12 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                             >
                     </div>
+                    <div>
+                        <label for="banner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Banner Film (jika ada)</label>
+                        <input type="file" name="banner" id="banner"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                            >
+                    </div>
                 </div>
                 <button type="submit"
                     class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
@@ -109,3 +125,11 @@
         </div>
     </div>
 </div>
+<script>
+    function addfilterGenres() {
+        let input = document.getElementById("addsearchGenreInput").value.toLowerCase();
+        document.querySelectorAll(".genre-item").forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(input) ? "" : "none";
+        });
+    }
+</script>

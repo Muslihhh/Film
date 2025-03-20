@@ -124,11 +124,13 @@ class DashboardController extends Controller
         ->orderByDesc('tahun_rilis') // Pastikan film utama tetap diurutkan
         ->paginate()
         ->appends(request()->query());
+    $banners = Film::where('banner_status', 1)->get();
 
     return view('user.home', [
-        'latestFilms' => $latestFilms,
+        'latestFilms' => $latestFilms, 
         'topRatedFilms' => $topRatedFilms,
         'films' => $films,
+        'banners' => $banners,
         'tahunList' => Film::select('tahun_rilis')->distinct()->orderByDesc('tahun_rilis')->pluck('tahun_rilis'),
         'negaraList' => Negara::all(),
         'genres' => Genre::all(),

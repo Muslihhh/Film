@@ -171,29 +171,27 @@
                         </td>
                         <td class=" py-4 flex gap-2 pr-2">
                             <button type="button" data-modal-target="edit-film-modal"
-                            data-modal-toggle="edit-film-modal"
-                            onclick="openEditFilmModal(
-                                {{ $film->id }},
-                                '{{ addslashes($film->judul) }}',
-                                '{{ addslashes($film->sinopsis) }}',
-                                '{{ $film->trailer }}',
-                                {{ $film->id_negara }},
-                                {{ $film->tahun_rilis }},
-                                '{{ $film->age_category }}',
-                                {{ $film->durasi }},
-                                '{{ json_encode($film->genres->pluck('id')->toArray()) }}'
-                            )"
-                            class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                            <svg class="w-4 h-4 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                              </svg>
-                              
-                            </button>
-                        
-                
-
-                            @include('admin.film.editfilm')
-                            <script src="{{ asset('js/editFilm.js') }}"></script>
+        data-modal-toggle="edit-film-modal"
+        onclick="openEditFilmModal(
+            {{ $film->id }},
+            '{{ addslashes($film->judul) }}',
+            '{{ addslashes($film->sinopsis) }}',
+            '{{ $film->trailer }}',
+            {{ $film->id_negara }},
+            {{ $film->tahun_rilis }},
+            '{{ $film->age_category }}',
+            {{ $film->durasi }},
+            '{{ addslashes($film->cast) }}',
+            '{{ json_encode($film->genres->pluck('id')->toArray()) }}',
+            '{{ $film->image }}',
+            '{{ $film->banner }}',
+            '{{ $film->banner_status }}'
+        )"
+        class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-3 py-2 text-center">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+    </svg>
+</button>
 
                             <button type="button"
                                 onclick="setDeleteAction('{{ route('films.destroy', $film->id) }}', '{{ $film->judul }}')"
@@ -262,9 +260,10 @@
                         </td>
                     </tr>
                 @endforeach
-                
             </tbody>
         </table>
+        @include('admin.film.editfilm')
+        <script src="{{ asset('js/editFilm.js') }}"></script>
     </div>
 
 </x-dashboard>

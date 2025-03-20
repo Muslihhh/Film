@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Film extends Model
 {
     protected $table = 'film';
-    protected $fillable = ['judul','slug', 'image', 'sinopsis', 'trailer', 'id_genre', 'id_negara', 'tahun_rilis','cast', 'age_category', 'durasi'];
+    protected $fillable = ['judul','slug', 'image','banner', 'sinopsis', 'trailer', 'id_genre', 'id_negara', 'tahun_rilis','cast', 'age_category', 'durasi','banner_status',];
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
