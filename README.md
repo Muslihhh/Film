@@ -74,14 +74,13 @@ Akses proyek di browser: `http://127.0.0.1:8000`
 
 ### **Backend (Laravel 11)**
 - `laravel/framework`
-- `barryvdh/laravel-debugbar`
-- `intervention/image` (untuk upload & manipulasi gambar)
-- `spatie/laravel-permission` (untuk manajemen role pengguna)
+
 
 ### **Frontend**
 - `tailwindcss`
 - `vite`
 - `alpinejs`
+- `librarry flowbite`
 
 ---
 
