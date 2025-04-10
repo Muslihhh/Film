@@ -2,7 +2,7 @@
 ![login](/public/images/loginn.jpg)
 ![home](/public/images/home.jpg)
 ![home2](/public/images/home2.jpg)
-![fitergenre](/public/images/fitergenre.jpg)
+![filtergenre](/public/images/filtergenre.jpg)
 
 
 Proyek ini adalah website direktori sinopsis dan trailer film berbasis Laravel 11 dan Tailwind CSS.
