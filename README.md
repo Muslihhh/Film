@@ -1,5 +1,5 @@
 # 🎬 Review Film
-![login](images/loginn.jpg)
+![login](/public/images/loginn.jpg)
 
 Proyek ini adalah website direktori sinopsis dan trailer film berbasis Laravel 11 dan Tailwind CSS.
 
